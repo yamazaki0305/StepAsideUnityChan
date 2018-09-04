@@ -19,7 +19,7 @@ public class ItemGenerator : MonoBehaviour
     //cornPrefabを入れる
     public GameObject conePrefab;
     //スタート地点
-    private int startPos = -160;
+    private int startPos = -200;
     //ゴール地点
     private int goalPos = 120;
     //アイテムを出すx方向の範囲
@@ -29,7 +29,7 @@ public class ItemGenerator : MonoBehaviour
     void Start()
     {
         //一定の距離ごとにアイテムを生成
-        for (int i = startPos; i < goalPos; i += 15)
+        for (int i = startPos; i < goalPos; i += 25)
         {
             //どのアイテムを出すのかをランダムに設定
             int num = UnityEngine.Random.Range(1, 11);

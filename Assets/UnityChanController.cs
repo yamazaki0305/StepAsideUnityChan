@@ -99,9 +99,12 @@ public class UnityChanController : MonoBehaviour
             this.isEnd = true;
         }
 
-        //コインに衝突した場合（追加）
+        //コインに衝突した場合
         if (other.gameObject.tag == "CoinTag")
         {
+            //パーティクルを再生
+            GetComponent<ParticleSystem>().Play();
+
             //接触したコインのオブジェクトを破棄（追加）
             Destroy(other.gameObject);
         }
