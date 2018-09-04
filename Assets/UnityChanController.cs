@@ -16,16 +16,21 @@ public class UnityChanController : MonoBehaviour
     private Animator myAnimator;
     //Unityちゃんを移動させるコンポーネントを入れる（追加）
     private Rigidbody myRigidbody;
-    //前進するための力（追加）
+    //前進するための力
     private float forwardForce = 800.0f;
-    //左右に移動するための力（追加）
+    //左右に移動するための力
     private float turnForce = 500.0f;
-    //左右の移動できる範囲（追加）
+    //左右の移動できる範囲
     private float movableRange = 3.4f;
-    //ジャンプするための力（追加）
+    //動きを減速させる係数
+    private float coefficient = 0.95f;
+    //ジャンプするための力
     private float upForce = 500.0f;
-    //ユニティちゃんの生死
-    bool isEnd;
+    //ゲームの終了判定
+    private bool isEnd = false;
+
+    //ゲーム終了時に表示するテキスト（追加）
+    private GameObject stateText;
 
     // Use this for initialization
     void Start()
@@ -41,13 +46,25 @@ public class UnityChanController : MonoBehaviour
         this.myRigidbody = GetComponent<Rigidbody>();
 
         isEnd = false;
+
+        // HirerarchyにあるGameObjectを探して代入
+        stateText = GameObject.Find("GameResultText");
+        stateText.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        //ゲーム終了判定ならユニティちゃんを減速させる
+        if (this.isEnd)
+        {
+            this.forwardForce *= this.coefficient;
+            this.turnForce *= this.coefficient;
+            this.upForce *= this.coefficient;
+            this.myAnimator.speed *= this.coefficient;
+        }
 
-        //Unityちゃんに前方向の力を加える（追加）
+        //Unityちゃんに前方向の力を加える
         this.myRigidbody.AddForce(this.transform.forward * this.forwardForce);
         //this.myRigidbody.AddForce(0,0,forwardForce);
 
@@ -90,18 +107,24 @@ public class UnityChanController : MonoBehaviour
         //障害物に衝突した場合
         if (other.gameObject.tag == "CarTag" || other.gameObject.tag == "TrafficConeTag")
         {
+            Debug.Log("over");
+            stateText.GetComponent<Text>().text = "GameOver!";
+            stateText.SetActive(true);
             this.isEnd = true;
         }
 
         //ゴール地点に到達した場合
         if (other.gameObject.tag == "GoalTag")
         {
+            stateText.GetComponent<Text>().text = "GameClear!";
+            stateText.SetActive(true);
             this.isEnd = true;
         }
 
         //コインに衝突した場合
         if (other.gameObject.tag == "CoinTag")
         {
+            Debug.Log("coin");
             //パーティクルを再生
             GetComponent<ParticleSystem>().Play();
 

@@ -29,7 +29,7 @@ public class ItemGenerator : MonoBehaviour
     void Start()
     {
         //一定の距離ごとにアイテムを生成
-        for (int i = startPos; i < goalPos; i += 25)
+        for (int i = startPos; i < goalPos; i += 15)
         {
             //どのアイテムを出すのかをランダムに設定
             int num = UnityEngine.Random.Range(1, 11);
