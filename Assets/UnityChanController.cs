@@ -24,6 +24,8 @@ public class UnityChanController : MonoBehaviour
     private float movableRange = 3.4f;
     //ジャンプするための力（追加）
     private float upForce = 500.0f;
+    //ユニティちゃんの生死
+    bool isEnd;
 
     // Use this for initialization
     void Start()
@@ -37,6 +39,8 @@ public class UnityChanController : MonoBehaviour
 
         //Rigidbodyコンポーネントを取得（追加）
         this.myRigidbody = GetComponent<Rigidbody>();
+
+        isEnd = false;
     }
 
     // Update is called once per frame
@@ -77,5 +81,29 @@ public class UnityChanController : MonoBehaviour
         }
 
 
+    }
+
+    //トリガーモードで他のオブジェクトと接触した場合の処理
+    void OnTriggerEnter(Collider other)
+    {
+
+        //障害物に衝突した場合
+        if (other.gameObject.tag == "CarTag" || other.gameObject.tag == "TrafficConeTag")
+        {
+            this.isEnd = true;
+        }
+
+        //ゴール地点に到達した場合
+        if (other.gameObject.tag == "GoalTag")
+        {
+            this.isEnd = true;
+        }
+
+        //コインに衝突した場合（追加）
+        if (other.gameObject.tag == "CoinTag")
+        {
+            //接触したコインのオブジェクトを破棄（追加）
+            Destroy(other.gameObject);
+        }
     }
 }

@@ -89,11 +89,10 @@ GameObject:
   - component: {fileID: 4742105974045400}
   - component: {fileID: 33766084494129546}
   - component: {fileID: 23204434268442504}
-  - component: {fileID: 65191314236906698}
   - component: {fileID: 65645423789469402}
   m_Layer: 0
-  m_Name: FreeCar 1
-  m_TagString: Untagged
+  m_Name: CarPrefab
+  m_TagString: CarTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -362,18 +361,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636442151154214}
   m_Mesh: {fileID: 4300000, guid: a116076f2156e4f39861677ce1b690e7, type: 3}
---- !u!65 &65191314236906698
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1636442151154214}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.0118514, y: 1.2854035, z: 1.8883743}
-  m_Center: {x: 0.000000059604645, y: 0.40481913, z: 0.0023937225}
 --- !u!65 &65645423789469402
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -381,7 +368,7 @@ BoxCollider:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1636442151154214}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.0118514, y: 1.1053271, z: 1.920417}
