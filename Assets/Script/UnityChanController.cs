@@ -139,16 +139,6 @@ public class UnityChanController : MonoBehaviour
             this.myAnimator.SetBool("Jump", false);
         }
 
-        //ジャンプしていない時にスペースが押されたらジャンプする（追加）
-        if (Input.GetKeyDown(KeyCode.Space) && this.transform.position.y < 0.5f)
-        {
-            Debug.Log("jump");
-            //ジャンプアニメを再生（追加）
-            this.myAnimator.SetBool("Jump", true);
-            //Unityちゃんに上方向の力を加える（追加）
-            this.myRigidbody.AddForce(this.transform.up * this.upForce);
-        }
-
         //ユニティちゃんが通り過ぎて画面外に出たアイテムを直ちに破棄
         GameObject[]descar = GameObject.FindGameObjectsWithTag("CarTag");
         foreach (GameObject obj in descar)
