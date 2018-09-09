@@ -32,6 +32,13 @@ public class UnityChanController : MonoBehaviour
     //ゲーム終了時に表示するテキスト（追加）
     private GameObject stateText;
 
+    //コイン獲得時のスコア加算
+    private GameObject scoreText;
+    private int score = 0;
+
+    private bool isLButtonDown = false;
+    private bool isRButtonDown = false;
+
     // Use this for initialization
     void Start()
     {
@@ -50,6 +57,11 @@ public class UnityChanController : MonoBehaviour
         // HirerarchyにあるGameObjectを探して代入
         stateText = GameObject.Find("GameResultText");
         stateText.SetActive(false);
+
+        // HirerarchyにあるGameObjectを探して代入
+        scoreText = GameObject.Find("GameScore");
+        scoreText.GetComponent<Text>().text = "Score "+score+"pt";
+
     }
 
     // Update is called once per frame
@@ -76,6 +88,34 @@ public class UnityChanController : MonoBehaviour
             this.myRigidbody.AddForce(-this.turnForce, 0, 0);
         }
         else if (Input.GetKey(KeyCode.RightArrow) && this.transform.position.x < this.movableRange)
+        {
+            //右に移動（追加）
+            this.myRigidbody.AddForce(this.turnForce, 0, 0);
+        }
+
+        //Jumpステートの場合はJumpにfalseをセットする（追加）
+        if (this.myAnimator.GetCurrentAnimatorStateInfo(0).IsName("Jump"))
+        {
+            this.myAnimator.SetBool("Jump", false);
+        }
+
+        //ジャンプしていない時にスペースが押されたらジャンプする（追加）
+        if (Input.GetKeyDown(KeyCode.Space) && this.transform.position.y < 0.5f)
+        {
+            Debug.Log("jump");
+            //ジャンプアニメを再生（追加）
+            this.myAnimator.SetBool("Jump", true);
+            //Unityちゃんに上方向の力を加える（追加）
+            this.myRigidbody.AddForce(this.transform.up * this.upForce);
+        }
+
+        // 左右上キー
+        if ( this.isLButtonDown && -this.movableRange < this.transform.position.x)
+        {
+            //左に移動（追加）
+            this.myRigidbody.AddForce(-this.turnForce, 0, 0);
+        }
+        else if (this.isRButtonDown && this.transform.position.x < this.movableRange)
         {
             //右に移動（追加）
             this.myRigidbody.AddForce(this.turnForce, 0, 0);
@@ -128,8 +168,45 @@ public class UnityChanController : MonoBehaviour
             //パーティクルを再生
             GetComponent<ParticleSystem>().Play();
 
-            //接触したコインのオブジェクトを破棄（追加）
+            //スコア加算
+            score += 10;
+            scoreText = GameObject.Find("GameScore");
+            scoreText.GetComponent<Text>().text = "Score " + score + "pt";
+
+            //接触したコインのオブジェクトを破棄
             Destroy(other.gameObject);
         }
+    }
+
+    //ジャンプボタンを押した場合の処理（追加）
+    public void GetMyJumpButtonDown()
+    {
+        if (this.transform.position.y < 0.5f)
+        {
+            this.myAnimator.SetBool("Jump", true);
+            this.myRigidbody.AddForce(this.transform.up * this.upForce);
+        }
+    }
+
+    //左ボタンを押し続けた場合の処理（追加）
+    public void GetMyLeftButtonDown()
+    {
+        this.isLButtonDown = true;
+    }
+    //左ボタンを離した場合の処理（追加）
+    public void GetMyLeftButtonUp()
+    {
+        this.isLButtonDown = false;
+    }
+
+    //右ボタンを押し続けた場合の処理（追加）
+    public void GetMyRightButtonDown()
+    {
+        this.isRButtonDown = true;
+    }
+    //右ボタンを離した場合の処理（追加）
+    public void GetMyRightButtonUp()
+    {
+        this.isRButtonDown = false;
     }
 }
