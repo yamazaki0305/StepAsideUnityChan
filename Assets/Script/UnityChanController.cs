@@ -36,8 +36,15 @@ public class UnityChanController : MonoBehaviour
     private GameObject scoreText;
     private int score = 0;
 
+    //ボタンの押し判定
     private bool isLButtonDown = false;
     private bool isRButtonDown = false;
+
+    //Unityちゃんとカメラの距離
+    private float difference;
+
+    //Main Cameraのオブジェクト
+    private GameObject camera;
 
     // Use this for initialization
     void Start()
@@ -61,6 +68,11 @@ public class UnityChanController : MonoBehaviour
         // HirerarchyにあるGameObjectを探して代入
         scoreText = GameObject.Find("GameScore");
         scoreText.GetComponent<Text>().text = "Score "+score+"pt";
+
+        //Unityちゃんのオブジェクトを取得
+        camera = GameObject.Find("Main Camera");
+        //Unityちゃんとカメラの位置（z座標）の差を求める
+        this.difference = this.transform.position.z - camera.transform.position.z;
 
     }
 
@@ -135,6 +147,29 @@ public class UnityChanController : MonoBehaviour
             this.myAnimator.SetBool("Jump", true);
             //Unityちゃんに上方向の力を加える（追加）
             this.myRigidbody.AddForce(this.transform.up * this.upForce);
+        }
+
+        //ユニティちゃんが通り過ぎて画面外に出たアイテムを直ちに破棄
+        GameObject[]descar = GameObject.FindGameObjectsWithTag("CarTag");
+        foreach (GameObject obj in descar)
+        {
+            if (obj.transform.position.z+this.difference < this.transform.position.z)
+                Destroy(obj);
+
+        }
+        GameObject[] descone = GameObject.FindGameObjectsWithTag("TrafficConeTag");
+        foreach (GameObject obj in descone)
+        {
+            if (obj.transform.position.z + this.difference < this.transform.position.z)
+                Destroy(obj);
+
+        }
+        GameObject[] descoin = GameObject.FindGameObjectsWithTag("CoinTag");
+        foreach (GameObject obj in descoin)
+        {
+            if (obj.transform.position.z + this.difference < this.transform.position.z)
+                Destroy(obj);
+
         }
 
 
